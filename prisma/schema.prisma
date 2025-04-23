@@ -27,6 +27,6 @@ model User {
   updated_at    DateTime @updatedAt
   last_login_at DateTime @default(now())
   name          String   @db.VarChar(255)
-  last_name     String   @db.VarChar(255)
+  last_name     String?  @db.VarChar(255)
   avatars       Avatars?
 }

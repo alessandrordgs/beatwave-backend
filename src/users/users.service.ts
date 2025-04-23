@@ -10,6 +10,17 @@ export class UsersService {
     return this.prismaService.user.create({ data });
   }
 
+  findOneByEmail({ email }: Prisma.UserWhereUniqueInput) {
+    return this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+      include: {
+        avatars: true,
+      },
+    });
+  }
+
   findOne({ id }: Prisma.UserWhereUniqueInput): Promise<User | null> {
     return this.prismaService.user.findUnique({ where: { id } });
   }

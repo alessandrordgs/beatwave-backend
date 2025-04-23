@@ -7,7 +7,9 @@ export class AvatarsService {
   constructor(private prismaService: PrismaService) {}
 
   create(data: Prisma.AvatarsCreateInput) {
-    return this.prismaService.avatars.create({ data });
+    return this.prismaService.avatars.create({
+      data,
+    });
   }
 
   findOne({ id }: Prisma.AvatarsWhereUniqueInput) {

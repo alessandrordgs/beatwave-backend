@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 import { AvatarsModule } from './avatars/avatars.module';
 import { AlbunsModule } from './albuns/albuns.module';
+import { LastfmModule } from './lastfm/lastfm.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AlbunsModule } from './albuns/albuns.module';
     PrismaModule,
     AvatarsModule,
     AlbunsModule,
+    LastfmModule,
   ],
   controllers: [AppController],
   providers: [AppService],

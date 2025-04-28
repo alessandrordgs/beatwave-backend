@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAlbunDto } from './dto/create-albun.dto';
-import { UpdateAlbunDto } from './dto/update-albun.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AlbunsService {
-  create(createAlbunDto: CreateAlbunDto) {
-    return 'This action adds a new albun';
+  constructor(private readonly prismaService: PrismaService) {}
+  async create(data: Prisma.AlbunsCreateInput, artist_id: string) {
+    return await this.prismaService.albuns.create({
+      data: {
+        ...data,
+        Artist: {
+          connect: {
+            id: artist_id,
+          },
+        },
+      },
+      include: {
+        Artist: true,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all albuns`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} albun`;
-  }
-
-  update(id: number, updateAlbunDto: UpdateAlbunDto) {
-    return `This action updates a #${id} albun`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} albun`;
+  async findAlbum({ album, artist }: { album: string; artist: string }) {
+    return await this.prismaService.albuns.findFirst({
+      where: {
+        name: {
+          equals: album,
+          mode: 'insensitive',
+        },
+        Artist: {
+          name: {
+            equals: artist,
+            mode: 'insensitive',
+          },
+        },
+      },
+      include: {
+        Artist: true,
+      },
+    });
   }
 }

@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { AvatarsModule } from './avatars/avatars.module';
 import { AlbunsModule } from './albuns/albuns.module';
 import { LastfmModule } from './lastfm/lastfm.module';
+import { ArtistsModule } from './artists/artists.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { LastfmModule } from './lastfm/lastfm.module';
     AvatarsModule,
     AlbunsModule,
     LastfmModule,
+    ArtistsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,1 +1,4 @@
-export class CreateAlbunDto {}
+export class CreateAlbumDto {
+  cover: string;
+  name: string;
+}

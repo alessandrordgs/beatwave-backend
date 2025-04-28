@@ -80,7 +80,7 @@ export class AuthController {
       });
     }
     res.set('authorization', `Bearer ${jwt}`);
-    res.set('acess_token', authInfo.accessToken);
+    res.set('access_token', authInfo.accessToken);
     res.redirect(`${process.env.URL_FRONTEND}?code=${jwt}`);
   }
 
@@ -126,7 +126,7 @@ export class AuthController {
     const jwt = this.authService.login(user);
 
     return {
-      acess_token: jwt,
+      access_token: jwt,
       user: user,
     };
   }

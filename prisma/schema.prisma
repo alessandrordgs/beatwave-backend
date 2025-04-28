@@ -30,3 +30,37 @@ model User {
   last_name     String?  @db.VarChar(255)
   avatars       Avatars?
 }
+
+model Albuns {
+  id           String   @id @default(uuid())
+  id_spotify   String?  @db.VarChar(255)
+  artist_id    String   @db.VarChar(255)
+  Artist       Artists? @relation(fields: [artist_id], references: [id])
+  cover        String   @db.VarChar(255)
+  name         String   @db.VarChar(255)
+  tracks_count Int      @db.Integer
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  Tracks       Tracks[]
+}
+
+model Artists {
+  id         String   @id @default(uuid())
+  id_spotify String?  @db.VarChar(255)
+  name       String   @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Albuns     Albuns[]
+}
+
+model Tracks {
+  id                String   @id @default(uuid())
+  id_spotify        String?  @db.VarChar(255)
+  id_album          String   @db.VarChar(255)
+  Albuns            Albuns?  @relation(fields: [id_album], references: [id])
+  name              String   @db.VarChar(255)
+  duration          Int      @db.Integer
+  position_original Int      @db.Integer
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+}

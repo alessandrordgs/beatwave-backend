@@ -7,5 +7,6 @@ import { HttpModule } from '@nestjs/axios';
   imports: [HttpModule],
   controllers: [LastfmController],
   providers: [LastfmService],
+  exports: [LastfmService],
 })
 export class LastfmModule {}

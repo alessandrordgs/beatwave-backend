@@ -15,4 +15,8 @@ export interface IAlbum {
     position_original: number;
     url: string;
   }[];
+  wiki?: {
+    published: string;
+    summary: string;
+  };
 }

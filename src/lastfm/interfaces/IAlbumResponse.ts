@@ -19,6 +19,10 @@ export interface IAlbumResponse {
     listeners: string;
     playcount: string;
     url: string;
+    wiki?: {
+      published: string;
+      summary: string;
+    };
   };
 }
 

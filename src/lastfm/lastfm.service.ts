@@ -85,6 +85,7 @@ export class LastfmService {
         method: 'album.getinfo',
         api_key: API_KEY,
         lang: 'pt',
+        autocorrect: 1,
       };
       const response = await firstValueFrom(
         this.httpService.get<IAlbumResponse>(
@@ -97,6 +98,28 @@ export class LastfmService {
           },
         ),
       );
+      console.log('data', {
+        artist: response.data.album.artist,
+        tags: response.data.album.tags.tag,
+        name: response.data.album.name,
+        cover: {
+          photo_url: response.data.album.image.find(
+            (item) => item.size === 'large',
+          )?.['#text'],
+          size: response.data.album.image.find((item) => item.size === 'large')
+            ?.size,
+        },
+        tracks: response.data.album.tracks.track.map((track) => ({
+          name: track.name,
+          duration: track.duration,
+          position_original: track['@attr'].rank,
+          url: track.url,
+        })),
+        wiki: {
+          published: response.data?.album?.wiki?.published,
+          summary: response.data?.album?.wiki?.summary,
+        },
+      });
       const data: IAlbum = {
         artist: response.data.album.artist,
         tags: response.data.album.tags.tag,
@@ -114,10 +137,16 @@ export class LastfmService {
           position_original: track['@attr'].rank,
           url: track.url,
         })),
+        wiki: {
+          published: response.data?.album?.wiki?.published,
+          summary: response.data?.album?.wiki?.summary,
+        },
       };
+
+      console.log('data', data);
       return data;
     } catch (error) {
-      if ((error as AxiosError)?.response.status === 404) {
+      if ((error as AxiosError)?.response?.status === 404) {
         throw new Error('AlbumNotFound');
       }
     }

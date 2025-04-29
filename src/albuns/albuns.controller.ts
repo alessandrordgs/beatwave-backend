@@ -40,7 +40,7 @@ export class AlbunsController {
     }
 
     const albumAPI = await this.lastfmService.getAlbumInfo({ album, artist });
-
+    return;
     const albumCreated = await this.albunsService.create(
       {
         cover: albumAPI.cover.photo_url,

@@ -41,13 +41,15 @@ export interface IAlbumSearchResponse {
 export interface IAlbumSearchResultsResponse {
   meta: {
     search_term: string;
-    start_page: string;
-    items_per_page: string;
-    start_index: string;
+    start_page: number;
+    items_per_page: number;
+    start_index: number;
   };
   albuns: {
     name: string;
     cover: string;
     artist: string;
+    id_spotify?: string;
+    total_tracks?: string;
   }[];
 }

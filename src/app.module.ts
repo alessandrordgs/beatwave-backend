@@ -9,6 +9,8 @@ import { AvatarsModule } from './avatars/avatars.module';
 import { AlbunsModule } from './albuns/albuns.module';
 import { LastfmModule } from './lastfm/lastfm.module';
 import { ArtistsModule } from './artists/artists.module';
+import { TracksModule } from './tracks/tracks.module';
+import { SpotifyModule } from './spotify/spotify.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { ArtistsModule } from './artists/artists.module';
     AlbunsModule,
     LastfmModule,
     ArtistsModule,
+    TracksModule,
+    SpotifyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

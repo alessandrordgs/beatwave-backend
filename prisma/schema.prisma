@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,11 +9,11 @@ datasource db {
 
 model Avatars {
   id         String   @id @default(uuid())
-  user       User     @relation(fields: [user_id], references: [id])
   user_id    String   @unique
   photo_url  String   @db.VarChar(255)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  user       User     @relation(fields: [user_id], references: [id])
 }
 
 model User {
@@ -35,13 +32,16 @@ model Albuns {
   id           String   @id @default(uuid())
   id_spotify   String?  @db.VarChar(255)
   artist_id    String   @db.VarChar(255)
-  Artist       Artists? @relation(fields: [artist_id], references: [id])
   cover        String   @db.VarChar(255)
-  name         String   @db.VarChar(255)
-  tracks_count Int      @db.Integer
+  tracks_count Int
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
+  name         String   @db.VarChar(255)
+  release_date String?  @db.VarChar(255)
+  Artist       Artists  @relation(fields: [artist_id], references: [id])
+  artists      String[]
   Tracks       Tracks[]
+  tags         String[]
 }
 
 model Artists {
@@ -57,10 +57,11 @@ model Tracks {
   id                String   @id @default(uuid())
   id_spotify        String?  @db.VarChar(255)
   id_album          String   @db.VarChar(255)
-  Albuns            Albuns?  @relation(fields: [id_album], references: [id])
   name              String   @db.VarChar(255)
-  duration          Int      @db.Integer
-  position_original Int      @db.Integer
+  artists           String[]
+  duration          Int
+  position_original Int
   created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt
+  Albuns            Albuns   @relation(fields: [id_album], references: [id])
 }

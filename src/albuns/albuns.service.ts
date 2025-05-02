@@ -5,15 +5,10 @@ import { Prisma } from '@prisma/client';
 @Injectable()
 export class AlbunsService {
   constructor(private readonly prismaService: PrismaService) {}
-  async create(data: Prisma.AlbunsCreateInput, artist_id: string) {
+  async create(data: Prisma.AlbunsCreateInput) {
     return await this.prismaService.albuns.create({
       data: {
         ...data,
-        Artist: {
-          connect: {
-            id: artist_id,
-          },
-        },
       },
       include: {
         Artist: true,

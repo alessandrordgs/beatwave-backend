@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { generateApiSignature } from './lastfm.utils';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { AxiosError } from 'node_modules/axios';
+import { AxiosError } from 'axios';
 import { IAlbumResponse } from './interfaces/IAlbumResponse';
 import { IAlbum } from 'src/albuns/Interfaces/IAlbum';
 import {
@@ -64,9 +64,13 @@ export class LastfmService {
     const data: IAlbumSearchResultsResponse = {
       meta: {
         search_term: response.data.results['opensearch:Query'].searchTerms,
-        start_page: response.data.results['opensearch:Query'].startPage,
-        items_per_page: response.data.results['opensearch:itemsPerPage'],
-        start_index: response.data.results['opensearch:startIndex'],
+        start_page: parseInt(
+          response.data.results['opensearch:Query'].startPage,
+        ),
+        items_per_page: parseInt(
+          response.data.results['opensearch:itemsPerPage'],
+        ),
+        start_index: parseInt(response.data.results['opensearch:startIndex']),
       },
       albuns: response.data.results.albummatches.album.map((album) => ({
         name: album.name,
@@ -98,28 +102,7 @@ export class LastfmService {
           },
         ),
       );
-      console.log('data', {
-        artist: response.data.album.artist,
-        tags: response.data.album.tags.tag,
-        name: response.data.album.name,
-        cover: {
-          photo_url: response.data.album.image.find(
-            (item) => item.size === 'large',
-          )?.['#text'],
-          size: response.data.album.image.find((item) => item.size === 'large')
-            ?.size,
-        },
-        tracks: response.data.album.tracks.track.map((track) => ({
-          name: track.name,
-          duration: track.duration,
-          position_original: track['@attr'].rank,
-          url: track.url,
-        })),
-        wiki: {
-          published: response.data?.album?.wiki?.published,
-          summary: response.data?.album?.wiki?.summary,
-        },
-      });
+
       const data: IAlbum = {
         artist: response.data.album.artist,
         tags: response.data.album.tags.tag,

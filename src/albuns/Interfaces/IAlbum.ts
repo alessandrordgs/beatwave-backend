@@ -1,9 +1,8 @@
 export interface IAlbum {
+  id_spotify: string;
   artist: string;
-  tags: {
-    name: string;
-    url: string;
-  }[];
+  artists: string[];
+  tags: string[];
   name: string;
   cover: {
     size: string;
@@ -14,6 +13,8 @@ export interface IAlbum {
     duration: number;
     position_original: number;
     url: string;
+    id_spotify?: string;
+    artists?: string[];
   }[];
   wiki?: {
     published: string;

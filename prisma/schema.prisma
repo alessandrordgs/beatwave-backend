@@ -65,3 +65,13 @@ model Tracks {
   updated_at        DateTime @updatedAt
   Albuns            Albuns   @relation(fields: [id_album], references: [id])
 }
+
+model Reviews {
+  id         String   @id @default(uuid())
+  id_album   String   @db.VarChar(255)
+  id_user    String   @db.VarChar(255)
+  review     String   @db.Text()
+  listen_at  DateTime @default(now())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

@@ -17,31 +17,33 @@ model Avatars {
 }
 
 model User {
-  id            String   @id @default(uuid())
-  auth_id       String   @db.VarChar(255)
-  email         String   @unique @db.VarChar(255)
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-  last_login_at DateTime @default(now())
-  name          String   @db.VarChar(255)
-  last_name     String?  @db.VarChar(255)
+  id            String    @id @default(uuid())
+  auth_id       String    @db.VarChar(255)
+  email         String    @unique @db.VarChar(255)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  last_login_at DateTime  @default(now())
+  name          String    @db.VarChar(255)
+  last_name     String?   @db.VarChar(255)
   avatars       Avatars?
+  Reviews       Reviews[]
 }
 
 model Albuns {
-  id           String   @id @default(uuid())
-  id_spotify   String?  @db.VarChar(255)
-  artist_id    String   @db.VarChar(255)
-  cover        String   @db.VarChar(255)
+  id           String    @id @default(uuid())
+  id_spotify   String?   @db.VarChar(255)
+  artist_id    String    @db.VarChar(255)
+  cover        String    @db.VarChar(255)
   tracks_count Int
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
-  name         String   @db.VarChar(255)
-  release_date String?  @db.VarChar(255)
-  Artist       Artists  @relation(fields: [artist_id], references: [id])
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  name         String    @db.VarChar(255)
+  release_date String?   @db.VarChar(255)
+  Artist       Artists   @relation(fields: [artist_id], references: [id])
   artists      String[]
   Tracks       Tracks[]
   tags         String[]
+  Reviews      Reviews[]
 }
 
 model Artists {
@@ -74,4 +76,6 @@ model Reviews {
   listen_at  DateTime @default(now())
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  Album      Albuns   @relation(fields: [id_album], references: [id])
+  User       User     @relation(fields: [id_user], references: [id])
 }

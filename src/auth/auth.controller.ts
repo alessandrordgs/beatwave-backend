@@ -86,9 +86,9 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  findOneByEmail(@Headers('authorization') token: string) {
+  async findOneByEmail(@Headers('authorization') token: string) {
     if (token) {
-      const user = this.authService.getUserFromAuthenticationToken(
+      const user = await this.authService.getUserFromAuthenticationToken(
         token.replace('Bearer ', ''),
       );
       return user;

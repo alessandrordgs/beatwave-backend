@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReviewDto } from './dto/create-review.dto';
+// import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -27,8 +27,14 @@ export class ReviewsService {
     });
   }
 
-  update(id: string, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
+  async update(id: string, id_user: string, data: UpdateReviewDto) {
+    return await this.prismaService.reviews.update({
+      data,
+      where: {
+        id: id,
+        id_user: id_user,
+      },
+    });
   }
 
   async remove(id: string, id_user) {

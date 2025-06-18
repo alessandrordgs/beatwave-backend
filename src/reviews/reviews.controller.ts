@@ -32,7 +32,7 @@ export class ReviewsController {
     );
     const review = await this.reviewsService.create({
       review: createReviewDto.review,
-      listen_at: createReviewDto.review,
+      listen_at: createReviewDto.listen_at,
       User: {
         connect: {
           id: user.id,
@@ -47,15 +47,14 @@ export class ReviewsController {
 
     return review;
   }
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  findAll() {
-    return this.reviewsService.findAll();
+  @Get(':id_album')
+  findAll(@Param('id_album') id_album: string) {
+    return this.reviewsService.findAll(id_album);
   }
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.reviewsService.findOne(+id);
+    return this.reviewsService.findOne(id);
   }
   @UseGuards(JwtAuthGuard)
   @Patch(':id')

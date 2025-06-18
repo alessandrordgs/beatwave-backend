@@ -106,21 +106,18 @@ export class AuthController {
         email: loginDto.email,
         name: loginDto.name,
         auth_id: loginDto.auth_id,
-      });
-      await this.avatarsServices.create({
-        photo_url: loginDto.avatar.photo_url,
-        user: {
-          connect: {
-            id: USER_CREATED.id,
+        avatars: {
+          create: {
+            photo_url: loginDto.avatar.photo_url,
           },
         },
       });
 
-      const jwt = this.authService.login(user);
+      const jwt = this.authService.login(USER_CREATED);
 
       return {
-        acess_token: jwt,
-        user: user,
+        access_token: jwt,
+        user: USER_CREATED,
       };
     }
     const jwt = this.authService.login(user);

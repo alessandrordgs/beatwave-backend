@@ -7,7 +7,12 @@ export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
   create(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prismaService.user.create({ data });
+    return this.prismaService.user.create({
+      data,
+      include: {
+        avatars: true,
+      },
+    });
   }
 
   findOneByEmail({ email }: Prisma.UserWhereUniqueInput) {

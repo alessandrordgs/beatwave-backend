@@ -10,10 +10,25 @@ export class ReviewsService {
     return await this.prismaService.reviews.create({ data });
   }
 
-  async findAll(id_user: string) {
+  async findAll(id_album: string) {
     return await this.prismaService.reviews.findMany({
       where: {
-        id_user: id_user,
+        id_album: id_album,
+      },
+      omit: {
+        id_album: true,
+        id_user: true,
+        updated_at: true,
+      },
+      include: {
+        User: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        created_at: 'desc',
       },
     });
   }

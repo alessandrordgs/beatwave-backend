@@ -30,20 +30,7 @@ export class ReviewsController {
     const user = await this.authService.getUserFromAuthenticationToken(
       token.replace('Bearer ', ''),
     );
-    const review = await this.reviewsService.create({
-      review: createReviewDto.review,
-      listen_at: createReviewDto.listen_at,
-      User: {
-        connect: {
-          id: user.id,
-        },
-      },
-      Album: {
-        connect: {
-          id: createReviewDto.id_album,
-        },
-      },
-    });
+    const review = await this.reviewsService.create(createReviewDto, user.id);
 
     return review;
   }

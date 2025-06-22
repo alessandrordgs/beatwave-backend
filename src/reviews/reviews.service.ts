@@ -1,13 +1,52 @@
 import { Injectable } from '@nestjs/common';
 // import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateReviewDto } from './dto/create-review.dto';
 @Injectable()
 export class ReviewsService {
   constructor(private prismaService: PrismaService) {}
-  async create(data: Prisma.ReviewsCreateInput) {
-    return await this.prismaService.reviews.create({ data });
+  async create(createReviewDto: CreateReviewDto, id_user: string) {
+    const review = await this.prismaService.reviews.create({
+      data: {
+        review: createReviewDto.review,
+        listen_at: createReviewDto.listen_at,
+        User: {
+          connect: {
+            id: id_user,
+          },
+        },
+        Album: {
+          connect: {
+            id: createReviewDto.id_album,
+          },
+        },
+      },
+    });
+
+    if (createReviewDto.rating) {
+      await this.prismaService.ratings.create({
+        data: {
+          rating: createReviewDto.rating,
+          User: {
+            connect: {
+              id: id_user,
+            },
+          },
+          Album: {
+            connect: {
+              id: createReviewDto.id_album,
+            },
+          },
+          Review: {
+            connect: {
+              id: review.id,
+            },
+          },
+        },
+      });
+    }
+    return review;
   }
 
   async findAll(id_album: string) {
@@ -26,6 +65,11 @@ export class ReviewsService {
             name: true,
           },
         },
+        Ratings: {
+          select: {
+            rating: true,
+          },
+        },
       },
       orderBy: {
         created_at: 'desc',
@@ -38,6 +82,17 @@ export class ReviewsService {
       where: {
         id: id,
         id_user: id_user,
+      },
+    });
+  }
+
+  async findLastReviewByUser(id_user: string) {
+    return this.prismaService.reviews.findFirst({
+      where: {
+        id_user: id_user,
+      },
+      orderBy: {
+        created_at: 'desc',
       },
     });
   }

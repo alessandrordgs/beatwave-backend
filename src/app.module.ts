@@ -12,6 +12,7 @@ import { ArtistsModule } from './artists/artists.module';
 import { TracksModule } from './tracks/tracks.module';
 import { SpotifyModule } from './spotify/spotify.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { RatingModule } from './rating/rating.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     TracksModule,
     SpotifyModule,
     ReviewsModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

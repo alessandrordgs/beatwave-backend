@@ -18,9 +18,6 @@ import { UsersModule } from 'src/users/users.module';
       useFactory: async () => {
         return {
           secret: process.env.JWT_SECRET,
-          signOptions: {
-            expiresIn: '3600s',
-          },
         };
       },
       inject: [ConfigService],

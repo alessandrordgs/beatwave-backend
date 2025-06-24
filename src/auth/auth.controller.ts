@@ -120,11 +120,26 @@ export class AuthController {
         user: USER_CREATED,
       };
     }
-    const jwt = this.authService.login(user);
+    const { access_token, refresh_token } = this.authService.login(user);
 
     return {
-      access_token: jwt,
+      access_token: access_token,
+      refresh_token: refresh_token,
       user: user,
     };
   }
+  @Post('/refresh')
+  async reauthenticate(
+    @Headers('authorization') token: string,
+    @Body() body: { refresh_token: string },
+  ) {
+    return this.authService.reauthenticate({
+      access_token: token.replace('Bearer ', ''),
+      refresh_token: body.refresh_token,
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/logout')
+  async logout() {}
 }

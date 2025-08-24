@@ -81,7 +81,7 @@ export class AuthController {
     }
     res.set('authorization', `Bearer ${jwt}`);
     res.set('access_token', authInfo.accessToken);
-    res.redirect(`${process.env.URL_FRONTEND}?code=${jwt}`);
+    res.redirect(`${process.env.URL_FRONTEND}?code=${jwt.access_token}`);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -91,7 +91,12 @@ export class AuthController {
       const user = await this.authService.getUserFromAuthenticationToken(
         token.replace('Bearer ', ''),
       );
-      return user;
+      const { access_token, refresh_token } = this.authService.login(user);
+      return {
+        user: user,
+        access_token: access_token,
+        refresh_token: refresh_token,
+      };
     }
   }
 
@@ -117,6 +122,7 @@ export class AuthController {
 
       return {
         access_token: jwt,
+        refresh_token: jwt.refresh_token,
         user: USER_CREATED,
       };
     }

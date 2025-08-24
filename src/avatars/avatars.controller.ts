@@ -1,20 +1,34 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AvatarsService } from './avatars.service';
-import { CreateAvatarDto } from './dto/create-avatar.dto';
 import { UpdateAvatarDto } from './dto/update-avatar.dto';
+import { StorageService } from 'src/storage/storage.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('avatars')
 export class AvatarsController {
-  constructor(private readonly avatarsService: AvatarsService) {}
+  constructor(
+    private readonly avatarsService: AvatarsService,
+    private readonly storageServices: StorageService,
+  ) {}
 
   @Post()
-  create(@Body() { photoURL, userId }: CreateAvatarDto) {
-    return this.avatarsService.create({
-      photo_url: photoURL,
-      user: {
-        connect: { id: userId },
-      },
+  @UseInterceptors(FileInterceptor('file'))
+  async create(@UploadedFile() file: Express.Multer.File) {
+    const url = await this.storageServices.uploadFile({
+      file,
+      isPublic: true,
     });
+    return url;
   }
 
   @Get(':id')
@@ -28,5 +42,10 @@ export class AvatarsController {
       where: { id },
       data: { photo_url: photoURL },
     });
+  }
+
+  @Delete('avatar/:key')
+  async remove(@Param('key') key: string) {
+    await this.storageServices.removeFile(key);
   }
 }

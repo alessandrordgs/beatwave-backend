@@ -13,6 +13,7 @@ import { TracksModule } from './tracks/tracks.module';
 import { SpotifyModule } from './spotify/spotify.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { RatingModule } from './rating/rating.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { RatingModule } from './rating/rating.module';
     SpotifyModule,
     ReviewsModule,
     RatingModule,
+    StorageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
